@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
+const cors = require('cors');
 
 const router = require('./routes');
 
@@ -20,6 +21,11 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
   useUnifiedTopology: false,
 });
 
+app.use(cors(
+  {
+    origin: ['http://localhost:3000'],
+  },
+));
 app.use(express.json());
 app.use(cookieParser());
 

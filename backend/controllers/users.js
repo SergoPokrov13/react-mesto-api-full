@@ -17,21 +17,21 @@ const createUser = async (req, res, next) => {
       password,
     } = req.body;
     const passwordHash = await bcrypt.hash(password, 10);
-    const user = await User.create({
-      name,
-      about,
-      avatar,
-      email,
-      password: passwordHash,
-    });
-    return res.status(CREATED_CODE).send({
-      data: {
-        _id: user._id,
-        name: user.name,
-        about: user.about,
-        avatar: user.avatar,
-        email: user.email,
+    const user = await User.create(
+      {
+        name,
+        about,
+        avatar,
+        email,
+        password: passwordHash,
       },
+    );
+    return res.status(CREATED_CODE).send({
+      _id: user._id,
+      name: user.name,
+      about: user.about,
+      avatar: user.avatar,
+      email: user.email,
     });
   } catch (err) {
     if (err.code === 11000) {
@@ -57,9 +57,7 @@ const updateUser = async (req, res, next) => {
       runValidators: true,
     });
     if (user) {
-      return res.send({
-        data: user,
-      });
+      return res.send(user);
     }
     return next(new NotFoundError('Пользователь не найден'));
   } catch (err) {
@@ -81,9 +79,7 @@ const updateUserAvatar = async (req, res, next) => {
       runValidators: true,
     });
     if (user) {
-      return res.send({
-        data: user,
-      });
+      return res.send(user);
     }
     return next(new NotFoundError('Пользователь не найден'));
   } catch (err) {
@@ -142,12 +138,7 @@ const login = async (req, res, next) => {
       _id: user._id,
     }, 'secret');
 
-    return res.cookie('jwt', token, {
-      maxAge: 3600000,
-      httpOnly: true,
-      sameSite: true,
-    })
-      .send({ messge: 'Успешная авторизация' });
+    return res.send({ messge: 'Успешная авторизация', token });
   } catch (err) {
     return next(err);
   }

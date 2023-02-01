@@ -9,7 +9,7 @@ class ApiAuth {
           return res.json();
         }
         return Promise.reject(`Ошибка: ${res.status}`);
-      }
+      }jwt
 
     signup(data){
         return fetch(`${this._baseUrl}/signup`,{
@@ -37,13 +37,13 @@ class ApiAuth {
         return fetch(`${this._baseUrl}/users/me`,{
             method: "GET",
             headers:{"Content-Type":this._contentType, 
-            "Authorization" : `Bearer ${jwt}`}
+            "Authorization" : jwt}
         }).then(this._checkResponse)
     }
 }
 
 const apiAuth = new ApiAuth({
-    baseUrl: "https://auth.nomoreparties.co",
+    baseUrl: "http://localhost:3005",
     contentType: "application/json",
 });
 

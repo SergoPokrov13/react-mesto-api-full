@@ -17,17 +17,6 @@ function Logged(loggedIn) {
   const [selectedCard, setCardClick] = useState({});
   const [cards, setCards] = useState([]);
 
-  const handleCurrentUser = () => {
-    if(loggedIn){
-      api
-      .getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) => console.log(err));
-    }
-  };
-
   const onUpdateUser = (name, description) => {
     api
       .setUserInfo(name, description)
@@ -49,8 +38,15 @@ function Logged(loggedIn) {
   };
 
   useEffect(() => {
-    handleCurrentUser();
-  }, []);
+    if(loggedIn){
+      api
+      .getUserInfo()
+      .then((data) => {
+        setCurrentUser(data);
+      })
+      .catch((err) => console.log(err));
+    }
+  }, [loggedIn]);
 
   const handleEditProfileClick = () => {
     setEditProfileOpen(true);
@@ -76,7 +72,7 @@ function Logged(loggedIn) {
   };
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
 
     api
       .likeCard(!isLiked, card._id)
@@ -89,8 +85,7 @@ function Logged(loggedIn) {
   }
 
   function handleCardDelete(card) {
-    const isOwn = card.owner._id === currentUser._id;
-
+    const isOwn = card.owner === currentUser._id;
     if (isOwn) {
       api
         .removeCard(card._id)
@@ -110,7 +105,7 @@ function Logged(loggedIn) {
       })
       .catch((err) => console.log(err));
     }
-  }, []);
+  }, [loggedIn]);
 
   function handleAddPlaceSubmit(card) {
     api

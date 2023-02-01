@@ -24,7 +24,7 @@ function Header({ logOut, loggedIn }) {
 
       <Route exact path="/">
         <div className="header__block">
-          <p className="header__subtitle">{loggedIn ?  loginUser.data.email : ''}</p>
+          <p className="header__subtitle">{loggedIn ?  loginUser.email : ''}</p>
           <Link
             to="/sign-in"
             onClick={logOut}

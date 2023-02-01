@@ -4,6 +4,14 @@ class Api {
     this._headers = headers;
   }
 
+  _getToken(){
+    const token = localStorage.getItem("token");
+    if(token){
+      this._headers = {...this._headers, 
+        "Authorization": token }
+    }
+  }
+
   _checkResponse(res) {
     if (res.ok) {
       return res.json();
@@ -12,12 +20,14 @@ class Api {
   }
 
   getUserInfo() {
+    this._getToken();
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
     }).then(this._checkResponse);
   }
 
   setUserAvatar(newAvatar) {
+    this._getToken();
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
@@ -26,6 +36,7 @@ class Api {
   }
 
   setUserInfo(nameUser, descriptionUser) {
+    this._getToken();
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
@@ -37,12 +48,14 @@ class Api {
   }
 
   getCards() {
+    this._getToken();
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
     }).then(this._checkResponse);
   }
 
   createCard({ name, link }) {
+    this._getToken();
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._headers,
@@ -51,6 +64,7 @@ class Api {
   }
 
   likeCard(like, cardId) {
+    this._getToken();
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: like ? "PUT" : "DELETE",
       headers: this._headers,
@@ -58,6 +72,7 @@ class Api {
   }
 
   removeCard(cardId) {
+    this._getToken();
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: "DELETE",
       headers: this._headers,
@@ -66,9 +81,9 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "127.0.0.1:3005",
+  baseUrl: "http://localhost:3005",
   headers: {
-    "Content-Type": "application/json",
+    "Content-Type": "application/json"
   },
 });
 
