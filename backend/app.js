@@ -23,9 +23,11 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
 
 app.use(cors(
   {
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000',
+      'http://mesto.full.sergey.nomoredomainsclub.ru'],
   },
 ));
+
 app.use(express.json());
 app.use(cookieParser());
 

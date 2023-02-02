@@ -43,7 +43,7 @@ class ApiAuth {
 }
 
 const apiAuth = new ApiAuth({
-    baseUrl: "http://localhost:3005",
+    baseUrl: "http://mesto.full.sergey.nomoredomainsclub.ru/api/",
     contentType: "application/json",
 });
 
