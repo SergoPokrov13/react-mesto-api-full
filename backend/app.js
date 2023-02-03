@@ -31,7 +31,7 @@ app.use(cors(
 app.use(express.json());
 app.use(cookieParser());
 
-app.post('/signup', celebrate({
+app.post('/api/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
@@ -45,14 +45,14 @@ app.post('/signup', celebrate({
 
 app.use(requestLogger);
 
-app.post('/signin', celebrate({
+app.post('/api/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
 }), login);
 app.use(auth);
-app.get('/signout', signout);
+app.get('/api/signout', signout);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
