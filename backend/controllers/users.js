@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+
+const { NODE_ENV, JWT_SECRET } = process.env;
 const { CREATED_CODE } = require('../utils/statusError');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
@@ -134,9 +136,10 @@ const login = async (req, res, next) => {
     if (!matched) {
       return next(new UnauthorizedError('Неправильный пользователь или пароль'));
     }
-    const token = jwt.sign({
-      _id: user._id,
-    }, 'secret');
+    const token = jwt.sign(
+      { _id: user._id },
+      NODE_ENV === 'production' ? JWT_SECRET : 'secret',
+    );
 
     return res.send({ messge: 'Успешная авторизация', token });
   } catch (err) {
