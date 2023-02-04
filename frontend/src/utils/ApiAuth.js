@@ -43,7 +43,7 @@ class ApiAuth {
 }
 
 const apiAuth = new ApiAuth({
-    baseUrl: "http://mesto.full.sergey.nomoredomainsclub.ru/api",
+    baseUrl: "https://mesto.full.sergey.nomoredomainsclub.ru/api",
     contentType: "application/json",
 });
 
